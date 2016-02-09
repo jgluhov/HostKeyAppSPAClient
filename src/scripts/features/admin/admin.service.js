@@ -11,19 +11,37 @@ export default class AdminService {
 		this.eventEmitter = new EventEmitter.EventEmitter();
 	}
 
-	observer() {
+	loadData() {
 		let form = null;
-		return Rx.Observable.fromEvent(this.eventEmitter, 'submitForm', (...args) => {
+		return Rx.Observable.fromEvent(this.eventEmitter, 'loadData', (...args) => {
 			form = args[0];
-			return {url: args[1], data: args[2]};
+			return {url: args[1]};
+		}).flatMapObserver(args => Rx.DOM.ajax({
+			method: 'GET',
+			url: args.url,
+			responseType: 'json'
+		}))
+		.map(r => {
+			return {response: r.response, form};
+		});
+	}
+
+	createData() {
+		let form = null;
+		return Rx.Observable.fromEvent(this.eventEmitter, 'createData', (...args) => {
+			form = args[0];
+			return {url: args[1], body: {data: args[2]}};
 		})
 		.debounce(500)
 		.distinctUntilChanged()
 		.flatMapLatest(args => Rx.DOM.ajax({
 			method: 'POST',
 			url: args.url,
-			data: args.data,
-			responseType: 'json'
+			body: JSON.stringify(args.body),
+			responseType: 'json',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		}))
 		.map(r => {
 			return {response: r.response, form};
