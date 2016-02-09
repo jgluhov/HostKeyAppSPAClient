@@ -8,13 +8,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin'),
 
 module.exports = {
 	context: __dirname + '/src',
-	entry: './scripts/main.js',
+	entry: './scripts/app.js',
 	output: {
 		path: __dirname + 'public',
 		publicPath: '/',
 		filename: './js/bundle.js'
 	},
-	devtool: 'inline-source-map',
+	devtool: 'source-map',
 	module: {
 		loaders: [
 			{

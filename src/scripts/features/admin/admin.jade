@@ -1,0 +1,26 @@
+//- Created by jgluhov on 09/02/16.
+h1 Admin
+.well.well-sm
+	form(name="userForm" novalidate ng-submit="admin.submitForm(userForm)")
+		.form-group
+			label(for="user") User:
+			input#user.form-control(type="text" ng-model="user" placeholder="Enter name" required)
+		.form-group
+			button.btn.btn-default(type="submit") Submit
+
+hr
+.well.well-sm
+	form(name="cityForm" novalidate ng-submit="admin.submitForm(cityForm)")
+		.form-group
+			label(for="city") City:
+			input#city.form-control(type="text" ng-model="city" placeholder="Enter name" required)
+		.form-group
+			button.btn.btn-default(type="submit") Submit
+
+.well.well-sm
+	form(name="institutionForm" novalidate ng-submit="admin.submitForm(institutionForm)")
+		.form-group
+			label(for="institution") Institution:
+			input#institution.form-control(type="text" ng-model="institution" placeholder="Enter name" required)
+		.form-group
+			button.btn.btn-default(type="submit") Submit

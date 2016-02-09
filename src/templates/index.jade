@@ -7,5 +7,11 @@ html
 		title HostKeySPAAppClient
 	body
 		header
+			.container
+				ul.nav.nav-pills
+					li(ui-sref-active="active")
+						a(href ui-sref="home") Home
+					li(ui-sref-active="active")
+						a(href ui-sref="admin") Admin
 		main
-		footer
+			.container(ui-view)

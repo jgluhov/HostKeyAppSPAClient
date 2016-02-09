@@ -14,7 +14,7 @@
     "max-len": [2, 120, 2],
     "max-depth": [2, 4],
     "max-nested-callbacks": [2, 5],
-    "indent": [2, 2],
+    "indent": [2, "tab", {"SwitchCase": 1}],
     "brace-style": [2, "1tbs"],
     "spaced-line-comment": 0,
 
@@ -23,7 +23,7 @@
     "no-multi-str": 2,
     "space-infix-ops": 2,
     "no-cond-assign": 2,
-    "no-console": 2,
+//    "no-console": 2,
     "no-constant-condition": 2,
     "no-control-regex": 2,
     "no-process-env": 0,
