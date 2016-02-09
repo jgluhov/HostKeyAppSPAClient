@@ -6,7 +6,18 @@ export default class AdminController {
 		this.adminService = AdminService;
 		this.$scope = $scope;
 
-		this.adminService.observer().subscribe((data) => console.log(data));
+		this.adminService.observer().subscribe((data) => {
+			switch (data) {
+				case 'userForm':
+					break;
+				case 'cityForm':
+					break;
+				case 'institutionForm':
+					break;
+				default:
+					break;
+			}
+		});
 	}
 
 	submitForm(form) {
@@ -16,13 +27,13 @@ export default class AdminController {
 
 		switch (form.$name) {
 			case 'userForm':
-				this.adminService.eventEmitter.emit('submitForm', '/users', this.$scope.user);
+				this.adminService.eventEmitter.emit('submitForm', form.$name, 'http://localhost:1337/users', this.$scope.user);
 				break;
 			case 'cityForm':
-				this.adminService.eventEmitter.emit('submitForm', '/cities', this.user);
+				this.adminService.eventEmitter.emit('submitForm', form.$name, 'http://localhost:1337/cities', this.user);
 				break;
 			case 'institutionForm':
-				this.adminService.eventEmitter.emit('submitForm', '/institutions', this.user);
+				this.adminService.eventEmitter.emit('submitForm', form.$name, 'http://localhost:1337/institutions', this.user);
 				break;
 			default:
 				break;

@@ -12,17 +12,21 @@ export default class AdminService {
 	}
 
 	observer() {
-		const observer = Rx.Observable.fromEvent(this.eventEmitter, 'submitForm', (...args) => {
-			return {url: args[0], data: args[1]};
-		}).map(args => {
-			return args;
-		}).flatMapLatest(args => Rx.DOM.ajax({
+		let form = null;
+		return Rx.Observable.fromEvent(this.eventEmitter, 'submitForm', (...args) => {
+			form = args[0];
+			return {url: args[1], data: args[2]};
+		})
+		.debounce(500)
+		.distinctUntilChanged()
+		.flatMapLatest(args => Rx.DOM.ajax({
 			method: 'POST',
 			url: args.url,
-			data: args.data
+			data: args.data,
+			responseType: 'json'
 		}))
-		.map(r => r.response);
-
-		return observer;
+		.map(r => {
+			return {response: r.response, form};
+		});
 	}
 }
