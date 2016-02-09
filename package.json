@@ -1,0 +1,27 @@
+{
+  "name": "host-key-spa-app-client",
+  "version": "0.0.0",
+  "description": "HostKey SPA App Client",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "webpack-dev-server --inline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jgluhov/HostKeyAppSPAClient.git"
+  },
+  "keywords": [
+    "HostKey",
+    "SPA",
+    "client"
+  ],
+  "author": "JGluhov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jgluhov/HostKeyAppSPAClient/issues"
+  },
+  "homepage": "https://github.com/jgluhov/HostKeyAppSPAClient#readme",
+  "devDependencies": {
+    "path": "^0.12.7"
+  }
+}
