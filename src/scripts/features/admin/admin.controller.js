@@ -6,63 +6,50 @@ export default class AdminController {
 		this.adminService = AdminService;
 		this.$scope = $scope;
 		this.$scope.users = [];
-		this.cities = [];
-		this.institutions = [];
+		this.$scope.cities = [];
+		this.$scope.institutions = [];
 
-		this.adminService.createData().subscribe(data => {
-			switch (data) {
-				case 'userForm':
-					break;
-				case 'cityForm':
-					break;
-				case 'institutionForm':
-					break;
-				default:
-					break;
-			}
-			console.log(data);
+		this.adminService.createItem().subscribe(data => {
+			this.$scope[data.category].push(data.response.user);
+			this.$scope.$digest();
 		});
 
 		this.adminService.loadData().subscribe(data => {
 			console.log(data);
-			switch (data.form) {
-				case 'userForm':
-					this.$scope.users = data.response.users;
-					this.$scope.$digest();
-					break;
-				case 'cityForm':
-					break;
-				case 'institutionForm':
-					break;
-				default:
-					break;
-			}
+			//switch (data.form) {
+			//	case 'userForm':
+			//		this.$scope.users = data.response.users;
+			//		this.$scope.$digest();
+			//		break;
+			//	case 'cityForm':
+			//		break;
+			//	case 'institutionForm':
+			//		break;
+			//	default:
+			//		break;
+			//}
 		});
 
-		this.adminService.eventEmitter.emit('loadData', 'userForm', 'http://localhost:1337/users');
-		//this.adminService.eventEmitter.emit('loadData', 'cityForm', 'http://localhost:1337/cities');
-		//this.adminService.eventEmitter.emit('loadData', 'institutionForm', 'http://localhost:1337/institutions');
+		this.adminService.deleteItem().subscribe(data => {
+			this.$scope[data.category].splice(this.$scope[data.category].indexOf(data.item), 1);
+			this.$scope.$digest();
+		});
+
+		this.adminService.eventEmitter.emit('loadItems', 'users', 'http://localhost:1337/users');
+		this.adminService.eventEmitter.emit('loadItems', 'cities', 'http://localhost:1337/cities');
+		this.adminService.eventEmitter.emit('loadItems', 'institutions', 'http://localhost:1337/institutions');
 	}
 
-	submitForm(form) {
+	submitForm(item, form) {
 		if (form.$invalid) {
 			return;
 		}
+		const category = form.$name.split('Form')[0];
+		this.adminService.eventEmitter.emit('createItem', category, `http://localhost:1337/${category}`, item);
+	}
 
-		switch (form.$name) {
-			case 'userForm':
-				this.adminService.eventEmitter.emit('createData', form.$name, 'http://localhost:1337/users', this.$scope.user);
-				break;
-			case 'cityForm':
-				this.adminService.eventEmitter.emit('createData', form.$name, 'http://localhost:1337/cities', this.user);
-				break;
-			case 'institutionForm':
-				this.adminService.eventEmitter.emit('createData', form.$name, 'http://localhost:1337/institutions', this.user);
-				break;
-			default:
-				break;
-		}
-
+	deleteItem(item, category) {
+		this.adminService.eventEmitter.emit('deleteItem', category, `http://localhost:1337/${category}`, item);
 	}
 }
 

@@ -4,7 +4,7 @@
   "description": "HostKey SPA App Client",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "webpack-dev-server --inline"
+    "test": "NODE_ENV=development webpack-dev-server --inline"
   },
   "repository": {
     "type": "git",

@@ -13,10 +13,11 @@ export default class AdminService {
 
 	loadData() {
 		let form = null;
-		return Rx.Observable.fromEvent(this.eventEmitter, 'loadData', (...args) => {
+		return Rx.Observable.fromEvent(this.eventEmitter, 'loadItems', (...args) => {
 			form = args[0];
 			return {url: args[1]};
-		}).flatMapObserver(args => Rx.DOM.ajax({
+		})
+			.flatMapObserver(args => Rx.DOM.ajax({
 			method: 'GET',
 			url: args.url,
 			responseType: 'json'
@@ -26,10 +27,10 @@ export default class AdminService {
 		});
 	}
 
-	createData() {
-		let form = null;
-		return Rx.Observable.fromEvent(this.eventEmitter, 'createData', (...args) => {
-			form = args[0];
+	createItem() {
+		let category = null;
+		return Rx.Observable.fromEvent(this.eventEmitter, 'createItem', (...args) => {
+			category = args[0];
 			return {url: args[1], body: {data: args[2]}};
 		})
 		.debounce(500)
@@ -44,7 +45,27 @@ export default class AdminService {
 			}
 		}))
 		.map(r => {
-			return {response: r.response, form};
+			return {response: r.response, category};
 		});
+	}
+
+	deleteItem() {
+		let category = null;
+		let item = null;
+		return Rx.Observable.fromEvent(this.eventEmitter, 'deleteItem', (...args) => {
+			category = args[0];
+			item = args[2];
+			return {url: args[1], id: item._id};
+		})
+			.debounce(500)
+			.distinctUntilChanged()
+			.flatMapLatest(args => Rx.DOM.ajax({
+				method: 'DELETE',
+				url: `${args.url}/${args.id}`,
+				responseType: 'json'
+			}))
+			.map(r => {
+				return {response: r.response, category, item};
+			});
 	}
 }
