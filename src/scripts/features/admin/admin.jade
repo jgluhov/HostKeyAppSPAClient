@@ -1,7 +1,7 @@
 //- Created by jgluhov on 09/02/16.
 h1 Admin
 .well.well-sm
-	form(name="usersForm" novalidate ng-submit="admin.submitForm(user, usersForm)")
+	form(name="userForm" novalidate ng-submit="admin.createItem(userForm, 'users', user)")
 		.form-group
 			label(for="user") User:
 			input#user.form-control(type="text" ng-model="user" placeholder="Enter name" required)
@@ -19,22 +19,50 @@ table.table.table-bordered
 			td(ng-bind="user.name")
 			td(ng-bind="user.created")
 			td
-				button.btn.btn-default(ng-click="admin.deleteItem(user,'users')")
+				button.btn.btn-default(ng-click="admin.deleteItem('users', user)")
 					i.glyphicon.glyphicon-trash
 
 hr
 .well.well-sm
-	form(name="citiesForm" novalidate ng-submit="admin.submitForm(citiesForm)")
+	form(name="cityForm" novalidate ng-submit="admin.createItem(cityForm,'cities', city)")
 		.form-group
 			label(for="city") City:
 			input#city.form-control(type="text" ng-model="city" placeholder="Enter name" required)
 		.form-group
 			button.btn.btn-default(type="submit") Submit
+
+table.table.table-bordered
+	thead
+		tr
+			th Name
+			th Date
+			th Actions
+	tbody
+		tr(ng-repeat="city in cities")
+			td(ng-bind="city.name")
+			td(ng-bind="city.created")
+			td
+				button.btn.btn-default(ng-click="admin.deleteItem('cities', city)")
+					i.glyphicon.glyphicon-trash
 hr
 .well.well-sm
-	form(name="institutionsForm" novalidate ng-submit="admin.submitForm(institutionsForm)")
+	form(name="institutionForm" novalidate ng-submit="admin.createItem(institutionForm, 'institutions', institution)")
 		.form-group
 			label(for="institution") Institution:
 			input#institution.form-control(type="text" ng-model="institution" placeholder="Enter name" required)
 		.form-group
 			button.btn.btn-default(type="submit") Submit
+
+table.table.table-bordered
+	thead
+		tr
+			th Name
+			th Date
+			th Actions
+	tbody
+		tr(ng-repeat="institution in institutions")
+			td(ng-bind="institution.name")
+			td(ng-bind="institution.created")
+			td
+				button.btn.btn-default(ng-click="admin.deleteItem('institutions', institution)")
+					i.glyphicon.glyphicon-trash

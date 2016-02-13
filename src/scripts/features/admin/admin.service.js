@@ -1,7 +1,5 @@
-/**
- * Created by jgluhov on 09/02/16.
- */
 /*global Rx*/
+
 import EventEmitter from 'events';
 import 'rxjs';
 import 'rx-dom';
@@ -11,27 +9,21 @@ export default class AdminService {
 		this.eventEmitter = new EventEmitter.EventEmitter();
 	}
 
-	loadData() {
-		let form = null;
+	loadItems() {
 		return Rx.Observable.fromEvent(this.eventEmitter, 'loadItems', (...args) => {
-			form = args[0];
-			return {url: args[1]};
+			return {category: args[0], url: args[1]};
 		})
-			.flatMapObserver(args => Rx.DOM.ajax({
+		.flatMap(args => Rx.DOM.ajax({
 			method: 'GET',
 			url: args.url,
 			responseType: 'json'
 		}))
-		.map(r => {
-			return {response: r.response, form};
-		});
+		.map(r => r.response);
 	}
 
 	createItem() {
-		let category = null;
 		return Rx.Observable.fromEvent(this.eventEmitter, 'createItem', (...args) => {
-			category = args[0];
-			return {url: args[1], body: {data: args[2]}};
+			return {url: args[0], body: {name: args[1]}};
 		})
 		.debounce(500)
 		.distinctUntilChanged()
@@ -40,32 +32,22 @@ export default class AdminService {
 			url: args.url,
 			body: JSON.stringify(args.body),
 			responseType: 'json',
-			headers: {
-				'Content-Type': 'application/json'
-			}
+			headers: {'Content-Type': 'application/json'}
 		}))
-		.map(r => {
-			return {response: r.response, category};
-		});
+		.map(r => r.response);
 	}
 
 	deleteItem() {
-		let category = null;
-		let item = null;
 		return Rx.Observable.fromEvent(this.eventEmitter, 'deleteItem', (...args) => {
-			category = args[0];
-			item = args[2];
-			return {url: args[1], id: item._id};
+			return {url: args[0], query: {id: args[1]._id}};
 		})
-			.debounce(500)
-			.distinctUntilChanged()
-			.flatMapLatest(args => Rx.DOM.ajax({
-				method: 'DELETE',
-				url: `${args.url}/${args.id}`,
-				responseType: 'json'
-			}))
-			.map(r => {
-				return {response: r.response, category, item};
-			});
+		.debounce(500)
+		.distinctUntilChanged()
+		.flatMapLatest(args => Rx.DOM.ajax({
+			method: 'DELETE',
+			url: `${args.url}/${args.query.id}`,
+			responseType: 'json'
+		}))
+		.map(r => r.response);
 	}
 }
