@@ -2,17 +2,29 @@
  * Created by jgluhov on 09/02/16.
  */
 
-var HtmlWebpackPlugin = require('html-webpack-plugin'),
+var webpack = require('webpack'),
+	HtmlWebpackPlugin = require('html-webpack-plugin'),
 	ExtractTextWebpackPlugin = require('extract-text-webpack-plugin'),
 	koutoSwiss = require('kouto-swiss');
 
 module.exports = {
 	context: __dirname + '/src',
-	entry: './scripts/app.js',
+	entry: {
+		vendor: [
+			'jquery',
+			'angular',
+			'angular-ui-router',
+			'rxjs',
+			'rx-dom',
+			'events'
+		],
+		app: './scripts/app.js'
+	},
+
 	output: {
 		path: __dirname + 'public',
 		publicPath: '/',
-		filename: './js/bundle.js'
+		filename: 'js/bundle.js'
 	},
 	devtool: 'source-map',
 	module: {
@@ -20,7 +32,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				loaders: ['babel?presets[]=es2015','eslint']
+				loaders: ['babel?presets[]=es2015', 'eslint']
 			},
 			{
 				test: /\.jade$/,
@@ -42,13 +54,19 @@ module.exports = {
 			}
 		]
 	},
+	noParse: [
+		/jquery\/dist\/jquery.js/,
+		/angular\/angular.js/,
+		/angular-ui-router\/release\/angular-ui-router.js/
+	],
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: './templates/index.jade'
 		}),
 		new ExtractTextWebpackPlugin('./css/styles.css', {
 			disable: process.env.NODE_ENV === 'development'
-		})
+		}),
+		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"js/vendor.bundle.js")
 	],
 	stylus: {
 		use: [koutoSwiss()],

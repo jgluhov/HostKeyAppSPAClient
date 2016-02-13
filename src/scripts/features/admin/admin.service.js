@@ -48,6 +48,8 @@ export default class AdminService {
 			url: `${args.url}/${args.query.id}`,
 			responseType: 'json'
 		}))
-		.map(r => r.response);
+		.map(r => {
+			return {response: r.response};
+		});
 	}
 }

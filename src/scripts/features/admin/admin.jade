@@ -4,7 +4,23 @@ h1 Admin
 	form(name="userForm" novalidate ng-submit="admin.createItem(userForm, 'users', user)")
 		.form-group
 			label(for="user") User:
-			input#user.form-control(type="text" ng-model="user" placeholder="Enter name" required)
+			input#user.form-control(type="text" ng-model="user.name" placeholder="Enter name" required)
+		.form-group
+			.row
+				.col-xs-6.col-md-4
+					label(for="city") City:
+					ui-select(ng-model='user.city')
+						ui-select-match.ui-select-match(placeholder='Select city')
+							span(ng-bind='$select.selected.name')
+						ui-select-choices.ui-select-choices(repeat='city in cities')
+							span(ng-bind='city.name')
+				.col-xs-6.col-md-4
+					label(for="institution") Institution:
+					ui-select(ng-model='user.institution')
+						ui-select-match.ui-select-match(placeholder='Select institution')
+							span(ng-bind='$select.selected.name')
+						ui-select-choices.ui-select-choices(repeat='institution in institutions')
+							span(ng-bind='institution.name')
 		.form-group
 			button.btn.btn-default(type="submit") Submit
 
@@ -66,3 +82,5 @@ table.table.table-bordered
 			td
 				button.btn.btn-default(ng-click="admin.deleteItem('institutions', institution)")
 					i.glyphicon.glyphicon-trash
+
+

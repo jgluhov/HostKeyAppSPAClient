@@ -11,6 +11,8 @@ export default class AdminController {
 		this.$scope.cities = [];
 		this.$scope.institutions = [];
 
+		$scope.user = {};
+
 		// Response from server when page loaded
 		this.adminService.loadItems().subscribe(
 			data => {
