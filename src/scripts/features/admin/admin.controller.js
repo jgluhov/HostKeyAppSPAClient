@@ -1,6 +1,8 @@
 /**
  * Created by jgluhov on 09/02/16.
  */
+import angular from 'angular';
+
 export default class AdminController {
 	constructor($scope, AppConstants, AdminService) {
 		this.$scope = $scope;
@@ -12,6 +14,8 @@ export default class AdminController {
 		this.$scope.institutions = [];
 
 		$scope.user = {};
+		$scope.city = {};
+		$scope.institution = {};
 
 		// Response from server when page loaded
 		this.adminService.loadItems().subscribe(
@@ -22,13 +26,11 @@ export default class AdminController {
 					}
 				}
 				this.$scope.$digest();
-			},
-			error => console.log(error)
+			}
 		);
 
 		// Response from server if create button is clicked
 		this.adminService.createItem().subscribe(data => {
-			console.log(data);
 			for (const key in data) {
 				if (data.hasOwnProperty(key)) {
 					this.$scope[key].push(data[key]);
@@ -54,17 +56,15 @@ export default class AdminController {
 		if (form.$invalid) {
 			return;
 		}
-		this.adminService.eventEmitter.emit('createItem', `${this.appConstants.host}/${category}`, item);
+		this.adminService.eventEmitter.emit('createItem', `${this.appConstants.host}/${category}`, angular.copy(item));
 
-		const modelName = form.$name.split('Form', 1);
-		this.$scope[modelName] = null;
-		this.$scope.$digest();
+		const modelName = form.$name.split('Form')[0];
+		this.$scope[modelName].name = undefined;
 	}
 
 	deleteItem(category, item) {
 		this.adminService.eventEmitter.emit('deleteItem', `${this.appConstants.host}/${category}`, item);
 		this.$scope[category].splice(this.$scope[category].indexOf(item), 1);
-		this.$scope.$digest();
 	}
 }
 
