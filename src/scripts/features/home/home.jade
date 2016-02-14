@@ -20,13 +20,21 @@ table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 			.row
 				.col-xs-3
 					label.sr-only(for="userCity") City:
-					select#userCity(select2 ng-model="user.cityID")
-						option(value="" disabled selected) Select city
-						option(ng-repeat="city in cities" ng-bind="city.name")
+					select#userCity(select2 category="cities" on-select="home.onSelect(category, item)")
+						option(value="init" selected) Select city filter
+						option(ng-repeat="city in home.cities" ng-bind="city.name" ng-value="city._id")
+
+					ul.list-group.list-filter
+						li.list-group-item(ng-repeat="city in filter.cities")
+							span.badge x
+							| {{city.name}}
+					.clearfix
 				.col-xs-7
 					label.sr-only(for="userInstitution") Institution:
-					select#userInstitution(select2 ng-model="user.institutionID")
-						option(value="" disabled selected) Select institution
-						option(ng-repeat="institution in institutions" ng-bind="institution.name")
+					select#userInstitution(select2 category="institutions" on-select="home.onSelect(category, item)")
+						option(value="init" selected) Select institution filter
+						option(ng-repeat="institution in home.institutions" ng-bind="institution.name" ng-value="institution._id")
+					ul.list-unstyled.list-filter
+						li(ng-repeat="institution in filter.institutions" ng-bind="::institution.name")
 				.col-xs-2
 					button.btn.btn-default.btn-block(type="submit") Apply

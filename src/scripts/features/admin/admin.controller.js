@@ -9,10 +9,12 @@ export default class AdminController {
 		this.dataService = DataService;
 		this.appConstants = AppConstants;
 
+		// Data arrays for tables
 		this.users = [];
 		this.cities = [];
 		this.institutions = [];
 
+		// Form models
 		$scope.user = {};
 		$scope.city = {};
 		$scope.institution = {};
@@ -58,13 +60,23 @@ export default class AdminController {
 		}
 		this.dataService.eventEmitter.emit('createItem', `${this.appConstants.host}/${category}`, angular.copy(item));
 
-		const modelName = form.$name.split('Form')[0];
-		this[modelName].name = undefined;
+		const model = form.$name.split('Form')[0];
+		this.$scope[model].name = undefined;
+		this.$scope.$broadcast('onChange');
 	}
 
 	deleteItem(category, item) {
 		this.dataService.eventEmitter.emit('deleteItem', `${this.appConstants.host}/${category}`, item);
 		this[category].splice(this[category].indexOf(item), 1);
+	}
+
+	onSelect(category, item) {
+		switch (category) {
+			case 'cities': this.$scope.user.cityID = item.id; break;
+			case 'institutions': this.$scope.user.institutionID = item.id; break;
+			default: break;
+		}
+		this.$scope.$apply();
 	}
 }
 

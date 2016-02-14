@@ -8,16 +8,18 @@ h1 Dashboard
 			.row
 				.col-xs-6.col-md-4
 					label(for="userCity") City:
-					select#userCity(select2 ng-model="user.cityID")
-						option(value="" disabled selected) Select city
-						option(ng-repeat="city in cities" ng-bind="city.name" ng-value="city._id")
+					select#userCity(select2 category="cities" on-select="admin.onSelect(category, item)")
+						option(value="init" selected) Select city
+						option(ng-repeat="city in admin.cities" ng-bind="city.name" ng-value="city._id")
 				.col-xs-6.col-md-4
 					label(for="userInstitution") Institution:
-					select#userInstitution(select2 ng-model="user.institutionID")
-						option(value="" disabled selected) Select institution
-						option(ng-repeat="institution in institutions" ng-bind="institution.name" ng-value="institution._id")
+					select#userInstitution(select2 category="institutions" on-select="admin.onSelect(category, item)")
+						option(value="init" selected) Select institution
+						option(ng-repeat="institution in admin.institutions" ng-bind="institution.name" ng-value="institution._id")
 		.form-group
 			button.btn.btn-default(type="submit") Submit
+
+	| {{ user | json }}
 
 table.table.table-bordered.table-condensed(ng-cloak)
 	thead
@@ -29,10 +31,10 @@ table.table.table-bordered.table-condensed(ng-cloak)
 			th Actions
 	tbody
 		tr(ng-repeat="user in admin.users")
-			td(ng-bind="user.name")
-			td(ng-bind="user.city.name")
-			td(ng-bind="user.institution.name")
-			td(ng-bind="user.created")
+			td(ng-bind="::user.name")
+			td(ng-bind="::user.city.name")
+			td(ng-bind="::user.institution.name")
+			td(ng-bind="::user.created")
 			td
 				button.btn.btn-default(ng-click="admin.deleteItem('users', user)")
 					i.glyphicon.glyphicon-trash
@@ -54,8 +56,8 @@ table.table.table-bordered.table-condensed(ng-cloak)
 			th Actions
 	tbody
 		tr(ng-repeat="city in admin.cities")
-			td(ng-bind="city.name")
-			td(ng-bind="city.created")
+			td(ng-bind="::city.name")
+			td(ng-bind="::city.created")
 			td
 				button.btn.btn-default(ng-click="admin.deleteItem('cities', city)")
 					i.glyphicon.glyphicon-trash
@@ -79,8 +81,8 @@ table.table.table-bordered.table-condensed(ng-cloak)
 	tbody
 		tr(ng-repeat="institution in admin.institutions")
 			td(ng-bind="$index+1")
-			td(ng-bind="institution.name")
-			td(ng-bind="institution.created")
+			td(ng-bind="::institution.name")
+			td(ng-bind="::institution.created")
 			td
 				button.btn.btn-default(ng-click="admin.deleteItem('institutions', institution)")
 					i.glyphicon.glyphicon-trash
