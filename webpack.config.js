@@ -51,6 +51,10 @@ module.exports = {
 			{
 				test: /\.(ttf|woff|woff2|eot|svg|map)$/,
 				loader: 'file?name=./fonts/[name].[ext]'
+			},
+			{
+				test: /\.(png)$/,
+				loader: 'file?name=./images/[name].[ext]'
 			}
 		]
 	},

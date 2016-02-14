@@ -2,6 +2,7 @@
  * Created by jgluhov on 09/02/16.
  */
 import 'bootstrap/dist/css/bootstrap.css';
+import './app.styl';
 
 import angular from 'angular';
 import uirouter from 'angular-ui-router';
