@@ -32,7 +32,12 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				loaders: ['babel?presets[]=es2015', 'eslint']
+				loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime', 'eslint']
+			},
+			{
+				test: /\.js$/,
+				include: /node_modules\/angular-data-table\/release\/dataTable.es6.js/,
+				loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime', 'eslint']
 			},
 			{
 				test: /\.jade$/,
