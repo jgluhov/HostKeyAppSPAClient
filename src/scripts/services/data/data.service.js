@@ -5,8 +5,7 @@ import 'rxjs';
 import 'rx-dom';
 import moment from 'moment';
 
-
-export default class AdminService {
+export default class DataService {
 	constructor() {
 		this.eventEmitter = new EventEmitter.EventEmitter();
 	}

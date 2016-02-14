@@ -7,11 +7,10 @@ import uirouter from 'angular-ui-router';
 
 import config from './admin.config';
 import AdminController from './admin.controller';
-import AdminService from './admin.service';
+import DataService from '../../services/data';
 import select2 from '../../directives/select2';
 
-export default angular.module('app.admin', [uirouter, select2])
+export default angular.module('app.admin', [uirouter, select2, DataService])
 	.config(config)
 	.controller('AdminController', AdminController)
-	.service('AdminService', AdminService)
 	.name;

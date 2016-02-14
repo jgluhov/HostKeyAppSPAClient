@@ -4,25 +4,25 @@
 import angular from 'angular';
 
 export default class AdminController {
-	constructor($scope, AppConstants, AdminService) {
+	constructor($scope, AppConstants, DataService) {
 		this.$scope = $scope;
-		this.adminService = AdminService;
+		this.dataService = DataService;
 		this.appConstants = AppConstants;
 
-		this.$scope.users = [];
-		this.$scope.cities = [];
-		this.$scope.institutions = [];
+		this.users = [];
+		this.cities = [];
+		this.institutions = [];
 
 		$scope.user = {};
 		$scope.city = {};
 		$scope.institution = {};
 
 		// Response from server when page loaded
-		this.adminService.loadItems().subscribe(
+		this.dataService.loadItems().subscribe(
 			data => {
 				for (const key in data) {
 					if (data.hasOwnProperty(key)) {
-						this.$scope[key] = data[key];
+						this[key] = data[key];
 					}
 				}
 				this.$scope.$digest();
@@ -30,25 +30,25 @@ export default class AdminController {
 		);
 
 		// Response from server if create button is clicked
-		this.adminService.createItem().subscribe(data => {
+		this.dataService.createItem().subscribe(data => {
 			for (const key in data) {
 				if (data.hasOwnProperty(key)) {
-					this.$scope[key].push(data[key]);
+					this[key].push(data[key]);
 				}
 			}
 			this.$scope.$digest();
 		});
 
 		// Response from server if delete button is clicked
-		this.adminService.deleteItem().subscribe(
+		this.dataService.deleteItem().subscribe(
 			(response) => console.log(response),
 			(error) => console.log(error)
 		);
 
 		// Requesting data from server
-		this.adminService.eventEmitter.emit('loadItems', 'users', `${this.appConstants.host}/users`);
-		this.adminService.eventEmitter.emit('loadItems', 'cities', `${this.appConstants.host}/cities`);
-		this.adminService.eventEmitter.emit('loadItems', 'institutions', `${this.appConstants.host}/institutions`);
+		this.dataService.eventEmitter.emit('loadItems', 'users', `${this.appConstants.host}/users`);
+		this.dataService.eventEmitter.emit('loadItems', 'cities', `${this.appConstants.host}/cities`);
+		this.dataService.eventEmitter.emit('loadItems', 'institutions', `${this.appConstants.host}/institutions`);
 	}
 
 	// Event handlers
@@ -56,16 +56,16 @@ export default class AdminController {
 		if (form.$invalid) {
 			return;
 		}
-		this.adminService.eventEmitter.emit('createItem', `${this.appConstants.host}/${category}`, angular.copy(item));
+		this.dataService.eventEmitter.emit('createItem', `${this.appConstants.host}/${category}`, angular.copy(item));
 
 		const modelName = form.$name.split('Form')[0];
-		this.$scope[modelName].name = undefined;
+		this[modelName].name = undefined;
 	}
 
 	deleteItem(category, item) {
-		this.adminService.eventEmitter.emit('deleteItem', `${this.appConstants.host}/${category}`, item);
-		this.$scope[category].splice(this.$scope[category].indexOf(item), 1);
+		this.dataService.eventEmitter.emit('deleteItem', `${this.appConstants.host}/${category}`, item);
+		this[category].splice(this[category].indexOf(item), 1);
 	}
 }
 
-AdminController.$inject = ['$scope', 'AppConstants', 'AdminService'];
+AdminController.$inject = ['$scope', 'AppConstants', 'DataService'];

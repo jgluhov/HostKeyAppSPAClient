@@ -28,7 +28,7 @@ table.table.table-bordered.table-condensed(ng-cloak)
 			th Date
 			th Actions
 	tbody
-		tr(ng-repeat="user in users")
+		tr(ng-repeat="user in admin.users")
 			td(ng-bind="user.name")
 			td(ng-bind="user.city.name")
 			td(ng-bind="user.institution.name")
@@ -53,7 +53,7 @@ table.table.table-bordered.table-condensed(ng-cloak)
 			th Date
 			th Actions
 	tbody
-		tr(ng-repeat="city in cities")
+		tr(ng-repeat="city in admin.cities")
 			td(ng-bind="city.name")
 			td(ng-bind="city.created")
 			td
@@ -77,7 +77,7 @@ table.table.table-bordered.table-condensed(ng-cloak)
 			th Date
 			th Actions
 	tbody
-		tr(ng-repeat="institution in institutions")
+		tr(ng-repeat="institution in admin.institutions")
 			td(ng-bind="$index+1")
 			td(ng-bind="institution.name")
 			td(ng-bind="institution.created")

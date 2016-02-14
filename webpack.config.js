@@ -16,7 +16,8 @@ module.exports = {
 			'angular-ui-router',
 			'rxjs',
 			'rx-dom',
-			'events'
+			'events',
+			'datatables'
 		],
 		app: './scripts/app.js'
 	},
@@ -32,11 +33,6 @@ module.exports = {
 			{
 				test: /\.js$/,
 				exclude: /node_modules/,
-				loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime', 'eslint']
-			},
-			{
-				test: /\.js$/,
-				include: /node_modules\/angular-data-table\/release\/dataTable.es6.js/,
 				loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-runtime', 'eslint']
 			},
 			{
@@ -75,7 +71,12 @@ module.exports = {
 		new ExtractTextWebpackPlugin('./css/styles.css', {
 			disable: process.env.NODE_ENV === 'development'
 		}),
-		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"js/vendor.bundle.js")
+		new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"js/vendor.bundle.js"),
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			jQuery: 'jquery',
+			'window.jQuery': 'jquery'
+		})
 	],
 	stylus: {
 		use: [koutoSwiss()],

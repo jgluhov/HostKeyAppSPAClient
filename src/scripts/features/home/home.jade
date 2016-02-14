@@ -1,8 +1,32 @@
-//- Created by jgluhov on 09/02/16.
 h1 HomeController
 
-dtable.material.dt(options='options', rows='data')
-	column(name='Name', width='300', flex-grow='2')
-	column(name='Gender')
-		strong {{$row.name}}
-		| : {{$cell}}
+table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
+	thead
+		tr
+			th #
+			th Пользователь
+			th Образование
+			th Город
+	tbody
+		tr(ng-repeat="user in home.users")
+			td(ng-bind="$index+1")
+			td(ng-bind="::user.name")
+			td(ng-bind="::user.institution.name")
+			td(ng-bind="::user.city.name")
+
+.well.well-sm
+	form(name="filterForm" novalidate ng-submit="home.apply()")
+		.form-group
+			.row
+				.col-xs-3
+					label.sr-only(for="userCity") City:
+					select#userCity(select2 ng-model="user.cityID")
+						option(value="" disabled selected) Select city
+						option(ng-repeat="city in cities" ng-bind="city.name")
+				.col-xs-7
+					label.sr-only(for="userInstitution") Institution:
+					select#userInstitution(select2 ng-model="user.institutionID")
+						option(value="" disabled selected) Select institution
+						option(ng-repeat="institution in institutions" ng-bind="institution.name")
+				.col-xs-2
+					button.btn.btn-default.btn-block(type="submit") Apply
