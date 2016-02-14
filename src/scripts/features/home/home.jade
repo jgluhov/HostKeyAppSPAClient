@@ -15,7 +15,7 @@ table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 			td(ng-bind="::user.city.name")
 
 .well.well-sm
-	form(name="filterForm" novalidate ng-submit="home.apply()")
+	form(name="filterForm" novalidate ng-submit="home.onFilterApply()")
 		.form-group
 			.row
 				.col-xs-3
@@ -26,7 +26,7 @@ table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 
 					ul.list-group.list-filter
 						li.list-group-item(ng-repeat="city in filter.cities")
-							span.badge x
+							span.badge(ng-click="home.onFilterRemove('cities', city)") x
 							| {{city.name}}
 					.clearfix
 				.col-xs-7
@@ -34,7 +34,10 @@ table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 					select#userInstitution(select2 category="institutions" on-select="home.onSelect(category, item)")
 						option(value="init" selected) Select institution filter
 						option(ng-repeat="institution in home.institutions" ng-bind="institution.name" ng-value="institution._id")
-					ul.list-unstyled.list-filter
-						li(ng-repeat="institution in filter.institutions" ng-bind="::institution.name")
+
+					ul.list-group.list-filter
+						li.list-group-item(ng-repeat="institution in filter.institutions")
+							span.badge(ng-click="home.onFilterRemove('institutions', institution)") x
+							| {{institution.name}}
 				.col-xs-2
 					button.btn.btn-default.btn-block(type="submit") Apply

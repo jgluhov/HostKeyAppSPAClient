@@ -12,11 +12,19 @@ export default class DataService {
 
 	loadItems() {
 		return Rx.Observable.fromEvent(this.eventEmitter, 'loadItems', (...args) => {
-			return {category: args[0], url: args[1]};
+			let query = '';
+			// Generate filters query
+			if (args[2]) {
+				query = Object.keys(args[2])
+					.map(key => key + '=' + args[2][key].map(elem => elem._id).join(','))
+					.join('&');
+			}
+
+			return {category: args[0], url: args[1], query: query};
 		})
 		.flatMap(args => Rx.DOM.ajax({
 			method: 'GET',
-			url: args.url,
+			url: `${args.url}?${args.query}`,
 			responseType: 'json'
 		}))
 		.doOnError(error => {
