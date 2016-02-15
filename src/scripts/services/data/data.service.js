@@ -41,7 +41,6 @@ export default class DataService {
 
 	createItem() {
 		return Rx.Observable.fromEvent(this.eventEmitter, 'createItem', (...args) => {
-			console.log(args[1]);
 			return {url: args[0], body: {item: args[1]}};
 		})
 		.debounce(500)
@@ -68,7 +67,6 @@ export default class DataService {
 
 	deleteItem() {
 		return Rx.Observable.fromEvent(this.eventEmitter, 'deleteItem', (...args) => {
-			console.log(args);
 			return {url: args[0], query: {id: args[1]._id}};
 		})
 		.flatMap(args => Rx.DOM.ajax({
