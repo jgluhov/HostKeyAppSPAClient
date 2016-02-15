@@ -21,7 +21,7 @@ export default class HomeController {
 		this.dtOptions = DTOptionsBuilder.newOptions().withBootstrap();
 
 		// Response from server when page loaded
-		this.dataService.loadItems().subscribe(
+		this.loadItems$ = this.dataService.loadItems().subscribe(
 			data => {
 				for (const key in data) {
 					if (data.hasOwnProperty(key)) {
@@ -36,6 +36,10 @@ export default class HomeController {
 		this.dataService.eventEmitter.emit('loadItems', 'users', `${this.appConstants.host}/users`);
 		this.dataService.eventEmitter.emit('loadItems', 'cities', `${this.appConstants.host}/cities`);
 		this.dataService.eventEmitter.emit('loadItems', 'institutions', `${this.appConstants.host}/institutions`);
+
+		this.$scope.$on('$destroy', () => {
+			this.loadItems$.dispose();
+		});
 	}
 
 	onSelect(category, item) {

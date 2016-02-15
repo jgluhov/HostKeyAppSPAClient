@@ -20,7 +20,7 @@ export default class AdminController {
 		$scope.institution = {};
 
 		// Response from server when page loaded
-		this.dataService.loadItems().subscribe(
+		this.loadItems$ = this.dataService.loadItems().subscribe(
 			data => {
 				for (const key in data) {
 					if (data.hasOwnProperty(key)) {
@@ -32,7 +32,7 @@ export default class AdminController {
 		);
 
 		// Response from server if create button is clicked
-		this.dataService.createItem().subscribe(data => {
+		this.createItem$ = this.dataService.createItem().subscribe(data => {
 			for (const key in data) {
 				if (data.hasOwnProperty(key)) {
 					this[key].push(data[key]);
@@ -42,7 +42,7 @@ export default class AdminController {
 		});
 
 		// Response from server if delete button is clicked
-		this.dataService.deleteItem().subscribe(
+		this.deleteItem$ = this.dataService.deleteItem().subscribe(
 			(response) => console.log(response),
 			(error) => console.log(error)
 		);
@@ -51,6 +51,12 @@ export default class AdminController {
 		this.dataService.eventEmitter.emit('loadItems', 'users', `${this.appConstants.host}/users`);
 		this.dataService.eventEmitter.emit('loadItems', 'cities', `${this.appConstants.host}/cities`);
 		this.dataService.eventEmitter.emit('loadItems', 'institutions', `${this.appConstants.host}/institutions`);
+
+		this.$scope.$on('$destroy', () => {
+			this.deleteItem$.dispose();
+			this.createItem$.dispose();
+			this.loadItems$.dispose();
+		});
 	}
 
 	// Event handlers

@@ -1,4 +1,4 @@
-h1 HomeController
+h1 Пользователи
 
 table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 	thead
@@ -8,7 +8,7 @@ table.table.table-bordered(datatable="ng" dt-options="home.dtOptions")
 			th Образование
 			th Город
 	tbody
-		tr(ng-repeat="user in home.users")
+		tr(ng-repeat="user in home.users track by user._id")
 			td(ng-bind="$index+1")
 			td(ng-bind="::user.name")
 			td(ng-bind="::user.institution.name")

@@ -19,12 +19,11 @@ export default class DataService {
 					.map(key => key + '=' + args[2][key].map(elem => elem._id).join(','))
 					.join('&');
 			}
-
-			return {category: args[0], url: args[1], query: query};
+			return {category: args[0], url: args[1], query};
 		})
 		.flatMap(args => Rx.DOM.ajax({
 			method: 'GET',
-			url: `${args.url}?${args.query}`,
+			url: `${args.url}${args.query ? '?' + args.query : ''}`,
 			responseType: 'json'
 		}))
 		.doOnError(error => {

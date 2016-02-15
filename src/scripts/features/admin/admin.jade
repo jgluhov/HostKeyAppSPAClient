@@ -1,4 +1,4 @@
-h1 Dashboard
+h1 Панель управления
 .well.well-sm
 	form(name="userForm" novalidate ng-submit="admin.createItem(userForm, 'users', user)")
 		.form-group
@@ -18,8 +18,6 @@ h1 Dashboard
 						option(ng-repeat="institution in admin.institutions" ng-bind="institution.name" ng-value="institution._id")
 		.form-group
 			button.btn.btn-default(type="submit") Submit
-
-	| {{ user | json }}
 
 table.table.table-bordered.table-condensed(ng-cloak)
 	thead
